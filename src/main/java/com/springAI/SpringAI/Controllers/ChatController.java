@@ -104,5 +104,10 @@ User question:
     public String temnplString() {
         return template.promptTemplate();
     }
+
+    @GetMapping("/template2")
+    public String temnplString2() {
+        return template.resourcePrompts();
+    }
     
 }
