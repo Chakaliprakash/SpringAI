@@ -17,6 +17,9 @@ public class TestController {
             return "API Key NOT Loaded";
         }
 
-        return "API Key Loaded: " + apiKey;
+        String masked = apiKey.length() > 10
+                ? apiKey.substring(0, 10) + "..."
+                : "***";
+        return "API Key Loaded: " + masked;
     }
 }
