@@ -13,6 +13,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springAI.SpringAI.Entity.Temp;
+import com.springAI.SpringAI.Service.TempService;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
@@ -20,11 +23,13 @@ public class TestController {
 
     private final ChatClient ollamChatClient;
     private final ChatMemory chatMemory;
+    private final TempService tempService;
 
     public TestController(@Qualifier("ollamaChatClient") ChatClient ollamChatClient,
-                          ChatMemory chatMemory) {
+                          ChatMemory chatMemory,TempService tempService) {
         this.ollamChatClient = ollamChatClient;
         this.chatMemory = chatMemory;
+        this.tempService=tempService;
     }
 
     @Value("classpath:prompts/user-prompts")
@@ -63,5 +68,16 @@ public class TestController {
                 .content();
         return str;
     }
+
+    @GetMapping("/chat/Temp")
+    public Temp getMethodName2String(@RequestParam String idString,@RequestParam String message) {
+        return tempService.geminientity2List(idString,message );
+    }
+
+    @GetMapping("/chat/Temp2")
+    public Temp getMethodName3String(@RequestParam String idString, @RequestParam String message) {
+        return tempService.getmemoryList(idString, message);
+    }
+    
 
 }
