@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
+// import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
@@ -77,7 +78,7 @@ private Resource systemResource;
         }
         
         var response= ollamaChatClient.prompt()
-                .system(system->system.text(systemResource))
+                // .advisors(new SimpleLoggerAdvisor())
                 .user(user->user.text(promptResource).param("topic", "java"))
                 .call() 
                 .content();
