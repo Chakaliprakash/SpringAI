@@ -1,7 +1,12 @@
 package com.springAI.SpringAI.Controllers;
 
+import java.util.List;
+
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -29,39 +34,34 @@ public class TestController {
     private String apiKey;
 
     @GetMapping("/chat/memoryadvisor")
-    public String getMemoryString(@RequestParam(defaultValue ="user1") String idString) {
+    public String getMemoryString(@RequestParam(defaultValue = "1") String idString) {
 
         System.out.println(idString);
 
         return ollamChatClient.prompt()
-                              .user(e->e.text(resource).param("topic", "java"))
-                              .advisors(a->a.param(ChatMemory.CONVERSATION_ID,idString))
-                              .call()
+                            //   .user(e->e.text(resource).param("topic", "Prakash Chakali"))
+                            .user("Im Prakash Chakali and Hi, my name is Rahul Sharma. I am 28 years old. I live in Hyderabad. I work as a software developer and I enjoy playing cricket in my free time. ")
+                            .advisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
+                            .advisors(a->a.param(ChatMemory.CONVERSATION_ID, idString))
+                            .call()
                             .content();  
     }
 
     @GetMapping("/chat/memory")
-    public String getMethodName(@RequestParam String conversationId) {
-        System.out.println(conversationId);
-        return this.chatMemory.get(conversationId).toString();
+    public String getMethodName(@RequestParam String idString, @RequestParam String meString) {
+        System.out.println(idString + " " + meString);
+
+
+        MessageChatMemoryAdvisor advisor =
+            MessageChatMemoryAdvisor.builder(chatMemory)
+                    .build();
+
+        String str = ollamChatClient.prompt(new Prompt(List.of(new UserMessage(meString))))
+                .advisors(advisor)
+                .advisors(a->a.param(ChatMemory.CONVERSATION_ID, idString))
+                .call()
+                .content();
+        return str;
     }
-    
-
-
-
-    @GetMapping("/test")
-    public String test() {
-
-        if (apiKey == null || apiKey.isBlank()) {
-            return "API Key NOT Loaded";
-        }
-
-        String masked = apiKey.length() > 10
-                ? apiKey.substring(0, 10) + "..."
-                : "***";
-        return "API Key Loaded: " + masked;
-    }
-    
-
 
 }
