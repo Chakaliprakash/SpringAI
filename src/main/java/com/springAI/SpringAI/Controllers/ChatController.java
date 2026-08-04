@@ -83,7 +83,7 @@ public class ChatController {
     private static final String str = """
 You are a coding expert and software engineer.
 
-Always address me as {name}.
+Always address e as {name}.
 
 User question:
 {message}
