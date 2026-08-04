@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -80,4 +81,13 @@ public class TestController {
     }
     
 
+    @GetMapping("/chat/logs")
+    public String getMemoryString2() {
+        return ollamChatClient.prompt()
+                            //   .user(e->e.text(resource).param("topic", "Prakash Chakali"))
+                            .user("My name is Prakash Chakali ,Just Greet me using emojies...")
+                            .advisors(new SimpleLoggerAdvisor())
+                            .call()
+                            .content();  
+    }
 }
