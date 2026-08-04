@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.springAI.SpringAI.Advisors.TokenCount;
+import com.springAI.SpringAI.Advisors.TokenCountAdvisor;
 
 @Configuration
 public class chatConfig {
@@ -50,7 +50,7 @@ public class chatConfig {
         return ChatClient.builder(model)
                 .defaultSystem(tone)
                 // .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
-                .defaultAdvisors(new TokenCount(),new SafeGuardAdvisor(List.of("Game")))
+                .defaultAdvisors(new TokenCountAdvisor(),new SafeGuardAdvisor(List.of("Game")))
                 .defaultOptions(
                         OllamaChatOptions.builder()
                                 .model("codellama")

@@ -7,18 +7,25 @@ import org.springframework.ai.chat.client.ChatClientResponse;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisor;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisorChain;
 
-public class TokenCount implements CallAdvisor {
+public class TokenCountAdvisor implements CallAdvisor {
 
-    private final Logger logger = LoggerFactory.getLogger(TokenCount.class);
+    private final Logger logger = LoggerFactory.getLogger(TokenCountAdvisor.class);
 
     @Override
     public ChatClientResponse adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {
 
         this.logger.info("My Token Counter Advisor is called : ");
 
+        // this.logger.info("To String Test : "+ chatClientRequest.toString());
+        this.logger.info("Request prompt : "+ chatClientRequest.prompt().getContents());
+        // this.logger.info("Copy : "+ chatClientRequest.copy());
+        // this.logger.info("Copy + String : "+ chatClientRequest.copy().toString());
+
+
         ChatClientResponse chatClientResponse = callAdvisorChain.nextCall(chatClientRequest);
 
         this.logger.info("Response Received From Token Advisor");
+        this.logger.info("Total tokens: " + chatClientResponse.chatResponse().getMetadata().getUsage().getTotalTokens());
         return chatClientResponse;
     }
 
