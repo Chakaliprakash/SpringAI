@@ -118,19 +118,6 @@ User question:
 
     private final MessageChatMemoryAdvisor memoryAdvisor;
 
-    @GetMapping("/chat/memoryadvisor2")
-    public Flux<String> getMemoryString2(@RequestParam(defaultValue = "1") String idString) {
-
-        System.out.println(idString);
-
-        return ollamaChatClient.prompt()
-                            //   .user(e->e.text(resource).param("topic", "Prakash Chakali"))
-                            .user("Im Prakash Chakali . What is Java ?")
-                            .advisors(memoryAdvisor)
-                            .advisors(a->a.param(ChatMemory.CONVERSATION_ID, idString))
-                            .stream()
-                            .content();  
-    }
     
     @GetMapping("/chat/memoryadvisor2/mem")
     public Flux<String> getMemoryString3(@RequestParam(defaultValue = "1") String idString,@RequestParam String message) {
