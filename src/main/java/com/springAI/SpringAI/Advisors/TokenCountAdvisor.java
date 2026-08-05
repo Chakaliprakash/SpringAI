@@ -1,13 +1,22 @@
 package com.springAI.SpringAI.Advisors;
 
+
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClientRequest;
 import org.springframework.ai.chat.client.ChatClientResponse;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisor;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisorChain;
+import org.springframework.ai.chat.client.advisor.api.StreamAdvisor;
+import org.springframework.ai.chat.client.advisor.api.StreamAdvisorChain;
 
-public class TokenCountAdvisor implements CallAdvisor {
+import lombok.AllArgsConstructor;
+import reactor.core.publisher.Flux;
+
+@AllArgsConstructor
+public class TokenCountAdvisor implements CallAdvisor,StreamAdvisor {
 
     private final Logger logger = LoggerFactory.getLogger(TokenCountAdvisor.class);
 
@@ -44,6 +53,54 @@ public class TokenCountAdvisor implements CallAdvisor {
         return super.toString();
     }
 
+    @Override
+public Flux<ChatClientResponse> adviseStream(
+        ChatClientRequest chatClientRequest,
+        StreamAdvisorChain streamAdvisorChain) {
+
+    Flux<ChatClientResponse> chatFlux = streamAdvisorChain.nextStream(chatClientRequest);
+
+    logger.info("Request in Stream: {}", chatClientRequest.prompt().getContents());
+
+    AtomicInteger totalTokens = new AtomicInteger();
+    StringBuilder responseText = new StringBuilder();
+
+    return chatFlux
+            .doOnNext(response -> {
+
+                if (response.chatResponse() != null
+                        && response.chatResponse().getMetadata() != null
+                        && response.chatResponse().getMetadata().getUsage() != null) {
+
+                    totalTokens.set(
+                            response.chatResponse()
+                                    .getMetadata()
+                                    .getUsage()
+                                    .getTotalTokens());
+                }
+
+                responseText.append(
+                        response.chatResponse()
+                                .getResult()
+                                .getOutput()
+                                .getText());
+            })
+            .doOnCancel(()->{logger.info("Response from Stream: {}", responseText);
+                logger.info("Total tokens in Stream: {}", totalTokens.get());})
+
+            .doOnComplete(() -> {
+                logger.info("Response from Stream: {}", responseText);
+                logger.info("Total tokens in Stream: {}", totalTokens.get());
+            })
+            
+            .doFinally(a->{
+                logger.info("Response from Stream: {}", responseText);
+                logger.info("Total tokens in Stream: {}", totalTokens.get());
+            });
+}
+}
+
+
     
 
-}
+

@@ -60,6 +60,8 @@ private Resource systemResource;
         System.out.println(prompt);
         return ollamaChatClient.prompt(prompt).call().content();
     }
+
+    
     public String resourcePrompts() {
         System.out.println("===== System Prompt =====");
         try {

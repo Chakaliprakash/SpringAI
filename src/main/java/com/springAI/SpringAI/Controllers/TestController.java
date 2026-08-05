@@ -11,11 +11,14 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springAI.SpringAI.Entity.Temp;
 import com.springAI.SpringAI.Service.TempService;
+
+import reactor.core.publisher.Flux;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,8 +36,11 @@ public class TestController {
         this.tempService=tempService;
     }
 
-    @Value("classpath:prompts/user-prompts")
-    private Resource resource;
+    @Value("classpath:/prompts/user-prompts")
+    private Resource promptResource;
+
+    @Value("classpath:/prompts/system-prompts")
+    private Resource systemResource;
 
     @Value("${spring.ai.openai.api-key}")
     private String apiKey;
@@ -90,4 +96,27 @@ public class TestController {
                             .call()
                             .content();  
     }
+
+
+
+
+    @GetMapping("/chat/stream")
+    public ResponseEntity<Flux<String>> stream(@RequestParam("message") String message) {
+        return ResponseEntity.ok(tempService.Stream(message));
+    }
+    
+
+    @GetMapping("/chat/streamtest")
+    public Flux<String> Stream(String message) {
+
+        return ollamChatClient.prompt()
+                .system(systemResource)
+                .user(u -> u.text(promptResource).param("topic", message))
+                .stream()
+                .chatResponse()
+                .doOnNext(response -> System.out.println(response.getMetadata().getUsage()))
+                .map(response -> response.getResult().getOutput().getText());
+    }
+
+    
 }

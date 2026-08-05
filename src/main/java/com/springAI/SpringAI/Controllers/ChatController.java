@@ -3,6 +3,10 @@ package com.springAI.SpringAI.Controllers;
 import java.util.List;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +19,7 @@ import com.springAI.SpringAI.Service.ChatService;
 import com.springAI.SpringAI.Service.Template;
 
 import lombok.AllArgsConstructor;
+import reactor.core.publisher.Flux;
 
 @AllArgsConstructor
 @RestController
@@ -75,7 +80,7 @@ public class ChatController {
         return ResponseEntity.ok(chatService.geminientity(message));
     }
 
-    @GetMapping("/path")
+    @GetMapping("/mutate")
     public String getMethodName(@RequestParam String message) {
         return chatService.gemini2String(message);
     }
@@ -110,4 +115,33 @@ User question:
         return template.resourcePrompts();
     }
     
+
+    private final MessageChatMemoryAdvisor memoryAdvisor;
+
+    @GetMapping("/chat/memoryadvisor2")
+    public Flux<String> getMemoryString2(@RequestParam(defaultValue = "1") String idString) {
+
+        System.out.println(idString);
+
+        return ollamaChatClient.prompt()
+                            //   .user(e->e.text(resource).param("topic", "Prakash Chakali"))
+                            .user("Im Prakash Chakali . What is Java ?")
+                            .advisors(memoryAdvisor)
+                            .advisors(a->a.param(ChatMemory.CONVERSATION_ID, idString))
+                            .stream()
+                            .content();  
+    }
+    
+    @GetMapping("/chat/memoryadvisor2/mem")
+    public Flux<String> getMemoryString3(@RequestParam(defaultValue = "1") String idString,@RequestParam String message) {
+
+        System.out.println(idString);
+
+        return ollamaChatClient.prompt(new Prompt(List.of(new UserMessage(message))))
+                            //   .user(e->e.text(resource).param("topic", "Prakash Chakali"))
+                            .advisors(memoryAdvisor)
+                            .advisors(a->a.param(ChatMemory.CONVERSATION_ID, idString))
+                            .stream()
+                            .content();  
+    }
 }
