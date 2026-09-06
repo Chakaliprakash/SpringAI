@@ -42,7 +42,7 @@ public class TestController {
     @Value("classpath:/prompts/system-prompts")
     private Resource systemResource;
 
-    @Value("${spring.ai.openai.api-key}")
+    @Value("${spring.ai.openai.api-key:}")
     private String apiKey;
 
     @GetMapping("/chat/memoryadvisor")

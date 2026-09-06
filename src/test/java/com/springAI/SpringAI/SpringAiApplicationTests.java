@@ -12,19 +12,24 @@ import com.springAI.SpringAI.Service.Template;
 class SpringAiApplicationTests {
 
 	@Autowired
-	private Template tenTemplate; 
+	private com.springAI.SpringAI.Controllers.ChatController chatController;
 
 	@Test
 	void contextLoads() {
 	}
 
 	@Test
-	void checkTemplate() {
-		String response = tenTemplate.promptTemplate();
-		System.out.println(response);
+	void testOpenAiMissingKey() {
+		String response = chatController.openai("hello");
+		System.out.println("OpenAI Response: " + response);
+		org.junit.jupiter.api.Assertions.assertEquals("OpenAI API key not found", response);
+	}
 
+	@Test
+	void testGeminiLive() {
+		String response = chatController.gemini("Say hello in one short word");
+		System.out.println("Gemini Response: " + response);
 		assertNotNull(response);
-        assertFalse(response.isBlank());
-
+		assertFalse(response.isBlank());
 	}
 }

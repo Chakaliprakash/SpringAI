@@ -39,8 +39,31 @@ public class ChatController {
     @Qualifier("geminiChatClient")
     private ChatClient geminiChatClient;
 
+    private final org.springframework.core.env.Environment environment;
+
+    private boolean isOpenAiConfigured() {
+        String key = environment.getProperty("OPEN_AI_apikey");
+        if (key != null && !key.isBlank() && !"disabled".equals(key)) {
+            return true;
+        }
+        String springKey = environment.getProperty("spring.ai.openai.api-key");
+        return springKey != null && !springKey.isBlank() && !"disabled".equals(springKey);
+    }
+
+    private boolean isGeminiConfigured() {
+        String key = environment.getProperty("GEMINI_API_KEY");
+        if (key != null && !key.isBlank() && !"disabled".equals(key)) {
+            return true;
+        }
+        String springKey = environment.getProperty("spring.ai.google.genai.api-key");
+        return springKey != null && !springKey.isBlank() && !"disabled".equals(springKey);
+    }
+
     @GetMapping("/openai")
     public String openai(@RequestParam String message) {
+        if (!isOpenAiConfigured()) {
+            return "OpenAI API key not found";
+        }
         return openAiChatClient.prompt()
                 .user(message)
                 .call()
@@ -50,15 +73,22 @@ public class ChatController {
     @GetMapping("/ollama")
     public String ollama(@RequestParam String message) {
         System.out.println("Message is : "+message);
-        String response= ollamaChatClient.prompt()
-                .user(message)
-                .call()
-                .content();
-                return response;
+        try {
+            String response= ollamaChatClient.prompt()
+                    .user(message)
+                    .call()
+                    .content();
+            return response;
+        } catch (Exception e) {
+            return "Ollama is not available";
+        }
     }
 
     @GetMapping("/gemini")
     public String gemini(@RequestParam String message) {
+        if (!isGeminiConfigured()) {
+            return "Gemini API key not found";
+        }
         System.err.println("Message is : "+message);
         String response;
         try {
@@ -75,13 +105,19 @@ public class ChatController {
     }
 
     @GetMapping("/gemini2")
-    public ResponseEntity<List<Tut>> gemini2(@RequestParam String message) {
+    public ResponseEntity<?> gemini2(@RequestParam String message) {
+        if (!isGeminiConfigured()) {
+            return ResponseEntity.badRequest().body("Gemini API key not found");
+        }
         System.out.println("Message is : "+message);
         return ResponseEntity.ok(chatService.geminientity(message));
     }
 
     @GetMapping("/mutate")
     public String getMethodName(@RequestParam String message) {
+        if (!isGeminiConfigured()) {
+            return "Gemini API key not found";
+        }
         return chatService.gemini2String(message);
     }
     
@@ -97,12 +133,16 @@ User question:
     @GetMapping("/dummy")
     public String Dummy(@RequestParam String message) {
         System.out.println("Message is : "+message);
-        String response= ollamaChatClient.prompt()
-                .user(e->e.text(str).param("message", message).param("name", "Prakash Chakali"))
-                .call()
-                .content();
-                System.out.println(response);
-                return response;
+        try {
+            String response= ollamaChatClient.prompt()
+                    .user(e->e.text(str).param("message", message).param("name", "Prakash Chakali"))
+                    .call()
+                    .content();
+            System.out.println(response);
+            return response;
+        } catch (Exception e) {
+            return "Ollama is not available";
+        }
     }
 
     @GetMapping("/template")

@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @Service
 public class ChatService {
 
-    @Qualifier("genimiChatClient")
+    @Qualifier("geminiChatClient")
     private final ChatClient geminiChatClient;
     
     private ChatClient gemini2ChatClient() {
