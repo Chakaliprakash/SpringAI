@@ -19,139 +19,53 @@
 
 ---
 
-## ✦ Project overview
+## Project Overview
 
-SpringAI is a Spring Boot application for experimenting with AI-powered application development using the Spring ecosystem. The project provides a place to configure the application, connect AI capabilities, and evolve the implementation through small, testable increments.
+SpringAI is a Java 21 and Spring Boot application for exploring generative AI integration with the Spring ecosystem.
 
-<table>
-<tr>
-<td width="50%" valign="top">
+## Highlights
 
-### ⚙️ Spring-native
+- Java and Spring Boot application structure.
+- Spring AI integration for AI-powered features.
+- Maven-based dependency management and builds.
+- Environment-based configuration for sensitive credentials.
 
-Use familiar Java and Spring Boot conventions to structure the application and expose backend functionality.
-
-</td>
-<td width="50%" valign="top">
-
-### ✨ AI integration
-
-Explore generative AI features through the Spring AI ecosystem and its model/client abstractions.
-
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
-
-### 🔐 Configuration-aware
-
-Keep API credentials outside source control and provide them through local environment variables.
-
-</td>
-<td width="50%" valign="top">
-
-### 🧪 Developer workflow
-
-Build and verify the project with Maven or the included Maven Wrapper.
-
-</td>
-</tr>
-</table>
-
-## 🧭 How the pieces fit
-
-<div align="center">
-
-<table>
-<tr>
-<td align="center"><b>Client / API request</b></td>
-<td align="center">→</td>
-<td align="center"><b>Spring Boot app</b></td>
-<td align="center">→</td>
-<td align="center"><b>Spring AI integration</b></td>
-<td align="center">→</td>
-<td align="center"><b>Configured model</b></td>
-</tr>
-</table>
-
-<sub>Conceptual flow — the exact endpoints and model providers depend on the current application configuration.</sub>
-
-</div>
-
-## 🧰 Tech stack
-
-<div align="center">
+## Tech Stack
 
 | Technology | Purpose |
 |:--|:--|
-| **Java 21** | Main programming language |
-| **Spring Boot** | Application framework |
-| **Spring AI** | AI integration layer |
-| **Maven** | Dependency management and build |
+| Java 21 | Application language |
+| Spring Boot | Backend framework |
+| Spring AI | AI integration |
+| Maven | Build and dependency management |
 
-</div>
+## Run Locally
 
-## 🚀 Get started
-
-### Prerequisites
-
-- JDK 21
-- Git
-- Maven, or use the included Maven Wrapper
-
-### 1. Clone the repository
+Clone the repository:
 
 ```bash
 git clone https://github.com/Chakaliprakash/SpringAI.git
 cd SpringAI
 ```
 
-### 2. Run the application
-
-**Windows PowerShell**
-
-```powershell
-.\mvnw.cmd spring-boot:run
-```
-
-**Linux / macOS**
+Run with the Maven Wrapper:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-## 🔐 Configuration
+On Windows, use `mvnw.cmd spring-boot:run`.
 
-Review the project's configuration files before starting the application. Set any required API keys as environment variables on your machine.
+## Configuration
 
-- Never commit real API keys, access tokens, or populated secret files.
-- Keep local credentials in environment variables or a local, ignored configuration file.
-- Check the application logs if startup fails due to missing configuration.
+Set the API keys required by your selected model provider as environment variables. Never commit real credentials to GitHub.
 
-## 🧪 Build & test
-
-Run the Maven verification lifecycle:
+## Build and Test
 
 ```bash
 ./mvnw verify
 ```
 
-On Windows:
+## Author
 
-```powershell
-.\mvnw.cmd verify
-```
-
-As the project evolves, add tests for application services, configuration, and controller behavior.
-
----
-
-<div align="center">
-
-### Build. Integrate. Experiment. Improve.
-
-[**View source code on GitHub →**](https://github.com/Chakaliprakash/SpringAI)
-
-<sub>Maintained by <a href="https://github.com/Chakaliprakash">Prakash Chakali</a></sub>
-
-</div>
+[Prakash Chakali](https://github.com/Chakaliprakash)
