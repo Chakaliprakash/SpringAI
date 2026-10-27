@@ -1,3 +1,19 @@
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=venom&height=190&color=0:052e16,50:166534,100:4ade80&text=SpringAI&fontColor=ffffff&fontSize=40&fontAlignY=42&desc=Java%2021%20%7C%20Spring%20AI%20%7C%20REST%20APIs&descAlignY=65&descSize=15" width="100%" alt="SpringAI banner"/>
+
+![Java%2021](https://img.shields.io/badge/Java%2021-Enabled-334155)
+![Spring%20AI](https://img.shields.io/badge/Spring%20AI-Project-0f766e)
+![Maven](https://img.shields.io/badge/Maven-Built%20with%20care-64748b)
+
+**Generative AI experiments with Spring.**
+
+[Repository](https://github.com/Chakaliprakash/SpringAI) · [Issues](https://github.com/Chakaliprakash/SpringAI/issues)
+
+</div>
+
+---
+
 # SpringAI
 
 A Java 21 and Spring Boot application exploring generative AI integration in the Spring ecosystem.
