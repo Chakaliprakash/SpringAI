@@ -28,7 +28,7 @@ SpringAI is a Java 21 and Spring Boot application for exploring generative AI in
 - Java and Spring Boot application structure.
 - Spring AI integration for AI-powered features.
 - Maven-based dependency management and builds.
-- Environment-based configuration for sensitive credentials.
+- Environment-based configuration for credentials.
 
 ## Tech Stack
 
@@ -41,16 +41,9 @@ SpringAI is a Java 21 and Spring Boot application for exploring generative AI in
 
 ## Run Locally
 
-Clone the repository:
-
 ```bash
 git clone https://github.com/Chakaliprakash/SpringAI.git
 cd SpringAI
-```
-
-Run with the Maven Wrapper:
-
-```bash
 ./mvnw spring-boot:run
 ```
 
@@ -58,7 +51,7 @@ On Windows, use `mvnw.cmd spring-boot:run`.
 
 ## Configuration
 
-Set the API keys required by your selected model provider as environment variables. Never commit real credentials to GitHub.
+Set the API keys required by your selected model provider as environment variables. Never commit real credentials.
 
 ## Build and Test
 
