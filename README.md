@@ -19,6 +19,8 @@
 
 ---
 
+# SpringAI
+
 ## Overview
 
 SpringAI is a Java 21 and Spring Boot application that exposes REST endpoints for experimenting with multiple generative AI providers.
