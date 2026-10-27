@@ -19,27 +19,27 @@
 
 ---
 
-## Project Overview
+## Overview
 
-SpringAI is a Java 21 and Spring Boot application for exploring generative AI integration with the Spring ecosystem.
+SpringAI is a Java 21 and Spring Boot application that exposes REST endpoints for experimenting with multiple generative AI providers.
 
-## Highlights
+## Features
 
-- Java and Spring Boot application structure.
-- Spring AI integration for AI-powered features.
-- Maven-based dependency management and builds.
-- Environment-based configuration for credentials.
+- Chat endpoints for OpenAI, Gemini, and Ollama.
+- Spring AI `ChatClient` integration.
+- Prompt-based text responses and structured response handling.
+- Maven-based build.
 
-## Tech Stack
+## Technology Stack
 
-| Technology | Purpose |
-|:--|:--|
-| Java 21 | Application language |
-| Spring Boot | Backend framework |
-| Spring AI | AI integration |
-| Maven | Build and dependency management |
+- Java 21
+- Spring Boot 4
+- Spring AI
+- Maven
 
 ## Run Locally
+
+Set the required provider credentials in a local `.env` file or environment variables. Ollama also requires a local Ollama service and the configured model.
 
 ```bash
 git clone https://github.com/Chakaliprakash/SpringAI.git
@@ -47,11 +47,21 @@ cd SpringAI
 ./mvnw spring-boot:run
 ```
 
-On Windows, use `mvnw.cmd spring-boot:run`.
+On Windows, run `mvnw.cmd spring-boot:run`. The application is configured for port `8081`.
+
+## API Examples
+
+Replace `your question` with a URL-encoded prompt.
+
+- `GET /chat/openai?message=your%20question`
+- `GET /chat/gemini?message=your%20question`
+- `GET /chat/ollama?message=your%20question`
+
+Check `ChatController` for additional endpoints and current response behavior.
 
 ## Configuration
 
-Set the API keys required by your selected model provider as environment variables. Never commit real credentials.
+Provider keys are read from configuration and environment variables. Never commit real API keys. Cloud-provider credentials are independent; Ollama runs locally.
 
 ## Build and Test
 
